@@ -10,7 +10,8 @@ plt.use('Agg')
 import pylab as pl
 import io
 
-"""
+    """
+    #This class has been used only to start with Tornado
     class MainHandler(tornado.web.RequestHandler):
     def get(self):
     self.write("Test...it works!")
@@ -30,22 +31,22 @@ class FormHandler(tornado.web.RequestHandler):#form HTML for receiving an URL as
 
 class PostHandler(tornado.web.RequestHandler):
 	def post(self):
-		url = self.get_argument('url', '')#post url
-		full_url = "http://"+url#add http
+		url = self.get_argument('url', '')#receive post url
+		full_url = "http://"+url#add http, here I should add a filter to recognize when users use http://
 		req = urllib2.Request(full_url)#
 		response = urllib2.urlopen(req)
-		the_page = response.read()#get text from website
+		the_page = response.read()#get text from website indicated in the url
 		wordList = re.sub("[^\w]", " ",  the_page).split()#take words from text
 		one_hundred = top_words(wordList)#select most frequent words
 		final_value = "  ".join(one_hundred)#generate a random sentence to be used for the image library
-		image = genImage(final_value)
+		image = genImage(final_value)#generate the image
 		self.set_header('Content-type', 'image/png')
 		self.set_header('Content-length', len(image))
-		self.write(image)
+		self.write(image)#save the image as words.png
 
 
 
-class FrontHandler(tornado.web.RequestHandler):
+class FrontHandler(tornado.web.RequestHandler):#this class just shows the resulting image to the user
 	def get(self):
 		self.write('<html><body><img src="words.png" /></body></html>')
 
